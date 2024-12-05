@@ -32,7 +32,17 @@ public class User {
 
     private String name;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String email;
+
+    private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) //permet de supprimer les messages si le user est supprimer
     @ToString.Exclude

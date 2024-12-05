@@ -5,6 +5,7 @@ import com.example.demo.model.Message;
 import com.example.demo.model.MessageDto;
 import com.example.demo.model.Profile;
 import com.example.demo.model.User;
+import com.example.demo.model.UserAuthDto;
 import com.example.demo.model.UserDto;
 import com.example.demo.repository.LikeRepository;
 import com.example.demo.repository.MessageRepository;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -103,5 +105,16 @@ public class UserService {
 
     public List<LikeTable> findLikeByUserId(Long userId) {
         return likeRepository.findByUserId(userId);
+    }
+
+    public User login(UserAuthDto user) {
+        User newUser = userRepository.findUserByEmail(user.getEmail());
+        if (Objects.isNull(newUser)) {
+            throw new RuntimeException("User pas trouvé");
+        }
+        if (newUser.getPassword().equals(user.getPassword())) {
+            return  newUser;
+        }
+        throw new RuntimeException("MDP invalide");
     }
 }
